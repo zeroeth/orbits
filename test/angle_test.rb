@@ -8,10 +8,10 @@ class AngleTest < Test::Unit::TestCase
     end
 
     should "assign defaults" do
-      assert_equal  0, @angle.axis_angle
-      assert_equal 10, @angle.axis_rpm
-      assert_equal :smooth, @angle.axis_steps
-      assert_equal :absolute, @angle.axis_type
+      assert_equal  0, @angle.angle
+      assert_equal 10, @angle.rpm
+      assert_equal :smooth, @angle.steps
+      assert_equal :absolute, @angle.type
     end
   end
 end

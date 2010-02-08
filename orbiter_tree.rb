@@ -7,11 +7,11 @@ class OrbiterTree
     self.window = window
 
     # build orbiter nest and set speed/direction/offset
-    sun = Orbiter.new
-    earth = Orbiter.new
-    jupiter = Orbiter.new
-    moon = Orbiter.new
-    self.root_node = Orbiter.new
+    sun = Orbiter.new :name => 'sun', :size => 300, :distance => 0
+    earth = Orbiter.new :name => 'earth', :size => 10, :distance => 20
+    jupiter = Orbiter.new :name => 'jupiter', :size => 50, :distance => 60
+    moon = Orbiter.new :name => 'moon', :size => 2, :distance => 20
+    self.root_node = sun
     sun.sub_orbits.push earth, jupiter
     earth.sub_orbits.push moon 
   end

@@ -14,6 +14,13 @@
 require 'rubygems'
 require 'chingu'
 
+require 'logger'
+$log = Logger.new("log/log.log", 'daily')
+$log.level = Logger::DEBUG
+puts "[Logger $log started in log/log.log]"
+$log.info "** Server Start #{Time.now}"
+require 'colored'
+
 include Gosu
 require 'gl'
 require 'glu'

@@ -1,10 +1,13 @@
 class BaseClass
   attr_accessor :defaults
 
-  def self.attribute(sym, default = nil, &block)
-     raise 'Default value or block required' unless !default.nil? || block
-     define_method(sym, block_given? ? block : Proc.new { default })
-     class_eval("def #{sym}=(value)\nclass << self; attr_reader :#{sym} end\n@#{sym} = value\nend\n", __FILE__, __LINE__)
+  def self.attribute(sym, default = nil)
+     raise 'Default value or block required' unless !default.nil?
+     #define_method(sym, block_given? ? block : Proc.new { default })
+     class_eval "attr_accessor :#{sym}"
+     #@@defaults ||= {}
+     #@@defaults[sym] = default.kind_of?(Proc) ? default : Proc.new { default }
+     #puts @@defaults.collect{|k,v| [k, v.class]}.inspect
   end
 
   def write_attribute(name, value)
@@ -12,8 +15,8 @@ class BaseClass
   end
 
   def initialize(options = {})
-    defaults = {} if defaults.nil?
-    options = defaults.merge options
+    #@@defaults.each{|name, value| defaults[name] = value.call }
+    options = (defaults || {}).merge options
     options.each{|name, value| write_attribute name, value}
   end
 end
