@@ -1,0 +1,10 @@
+name,size,distance,axis_speed,orbit_speed,parent
+sun,109,0,25.3799,0,
+mercury,0.383,0.4,58.6462,0.2408,sun
+venus,0.95,0.7,-243.0187,0.6152,sun
+earth,1,1,0.9972,1,sun
+mars,0.533,1.5,1.0259,1.88,sun
+jupiter,11.3,5.2,0.4101,11.859,sun
+saturn,9.449,9.5,0.426,29.457,sun
+uranus,4.007,19.6,-0.7183,83.3233,sun
+neptune,3.883,30,0.67125,164.79,sun

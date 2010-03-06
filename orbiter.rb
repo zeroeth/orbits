@@ -53,17 +53,24 @@ class Orbiter
   end
 
   def orbit_speed
-    attribute_get(:orbit_speed) * 0.1
+    attribute_get(:orbit_speed) * 0.5
   end
 
   def size
     size = attribute_get(:size)
-    size > 100 ? 5 : size
+    size = size > 100 ? 0.1 : size
+    size * 3
+    5
+  end
+
+  def distance
+    distance = attribute_get(:distance)
+    distance * 6
   end
 
   # separate into a 'view'
   def draw
-    $log.info "#{name} :: #{object_id} :: draw"
+    #$log.info "#{name} :: #{object_id} :: draw"
     glPushMatrix
       glRotate orbit_angle, 0, 0, 1
       glTranslate distance, distance, 0 # not precise..
@@ -77,7 +84,7 @@ class Orbiter
           step = (Math::PI*2)/resolution
           (resolution+1).times do |n|
             glColor4f *[color[:red], color[:green], color[:blue], color[:alpha]]
-            glVertex2i Math::sin(n*step)*size*0.5, Math::cos(n*step)*size*0.5
+            glVertex2i Math::sin(n*step)*size, Math::cos(n*step)*size
           end
         glEnd
       glPopMatrix
