@@ -1,0 +1,14 @@
+Requirements
+
+http://code.google.com/p/gosu/wiki/GettingStartedOnLinux
+http://code.google.com/p/gosu/wiki/GettingStartedOnOsx
+http://code.google.com/p/gosu/wiki/GettingStartedOnWindows
+
+Installation 
+
+gem install bundler
+bundle install
+
+Usage
+
+ruby orbits.rb
