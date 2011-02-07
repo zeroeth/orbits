@@ -1,21 +1,26 @@
+# GEMS
 require 'rubygems'
+require 'bundler/setup'
+require 'gl'
+require 'glu'
 require 'dm-core'
+
+include Gl
+include Glu
+
+# LOCALS
+require 'base_class'
+require 'angle'
+
+
+# SETUP
 
 # If you want the logs displayed you have to do this before the call to setup
 DataMapper::Logger.new($stdout, :debug)
 
 # An in-memory Sqlite3 connection:
-DataMapper.setup(:default, 'sqlite3:orbits.lite')
+DataMapper.setup(:default, 'sqlite3:orbits_planets.lite')
 
-require 'base_class'
-require 'rubygems'
-require 'gl'
-require 'glu'
-
-include Gl
-include Glu
-
-require 'angle'
 
 class Orbiter
   include DataMapper::Resource
@@ -24,13 +29,14 @@ class Orbiter
   belongs_to :orbiter, :required => false
 
   property :id, Serial
-  property :distance, Float, :default => 2.0
-  property :size, Float, :default => 20.0
-  property :orbit_speed, Float, :default => 1.0
-  property :orbit_angle, Float, :default => 0.0
-  property :axis_speed, Float, :default => 1.0
-  property :axis_angle, Float, :default => 0.0
+  property :distance,    Float, :default =>  1.0 # Astronomical Units 154.5 million kilometers.
+  property :size,        Float, :default =>  1.0 # Radius ratio to 1 Earth 6,710 kilometers.
+  property :orbit_speed, Float, :default =>  1.0 # Earth Years
+  property :orbit_angle, Float, :default =>  0.0 
+  property :axis_speed,  Float, :default =>  1.0 # Earth Days
+  property :axis_angle,  Float, :default =>  0.0
   property :name, String, :default => 'unamed'
+
   def color
     @color ||= {:red => rand, :green => rand, :blue => rand, :alpha => 1.0}
   end
@@ -41,36 +47,41 @@ class Orbiter
   end
 
   def update
-    $log.info "#{name} :: #{object_id} :: update #{orbit_angle} #{axis_angle}"
-    self.orbit_angle += 1/orbit_speed unless orbit_speed == 0
-    self.axis_angle += axis_speed unless axis_speed == 0
-    sub_orbits.each(&:update)
+    if $window.fps > 0
+      $log.info "[#{$window.fps}] #{name} :: #{object_id} :: update #{orbit_angle} #{axis_angle}"
+      self.orbit_angle += orbit_speed if orbit_speed.finite?
+      self.axis_angle += axis_speed if axis_speed.finite?
+      sub_orbits.each(&:update)
+    end
   end
 
   # normalize all these into values relating to each other, and scale universe accordingly
   def axis_speed
-    attribute_get(:axis_speed) * 1
+    (1.0/attribute_get(:axis_speed)) * ((2.0*Math::PI)/($window.fps+0.01))
   end
 
   def orbit_speed
-    attribute_get(:orbit_speed) * 0.5
+    (1.0/attribute_get(:orbit_speed)) * ((2.0*Math::PI)/($window.fps+0.01))
   end
 
   def size
     size = attribute_get(:size)
     size = size > 100 ? 0.1 : size
-    size * 3
-    5
+    10
   end
 
   def distance
     distance = attribute_get(:distance)
-    distance * 6
+    if id == 1
+      0
+    else
+      $window.height/3.0
+      (id-1) * (($window.height*1.0)/3.0/9.0)
+    end
   end
 
   # separate into a 'view'
   def draw
-    #$log.info "#{name} :: #{object_id} :: draw"
     glPushMatrix
       glRotate orbit_angle, 0, 0, 1
       glTranslate distance, distance, 0 # not precise..
@@ -79,12 +90,13 @@ class Orbiter
       glPushMatrix
         glRotate axis_angle, 0, 0, 1
         glBegin GL_TRIANGLE_FAN
-          resolution = 20
+          resolution = 6
           glVertex2i 0, 0
+	  # TODO replace with display list, and a scale
           step = (Math::PI*2)/resolution
           (resolution+1).times do |n|
             glColor4f *[color[:red], color[:green], color[:blue], color[:alpha]]
-            glVertex2i Math::sin(n*step)*size, Math::cos(n*step)*size
+            glVertex2f Math::sin(n*step)*size, Math::cos(n*step)*size
           end
         glEnd
       glPopMatrix
