@@ -15,7 +15,7 @@ require 'rubygems'
 require 'chingu'
 
 require 'logger'
-$log = Logger.new("log/log.log", 'daily')
+$log = Logger.new("log/log.log")
 $log.level = Logger::DEBUG
 puts "[Logger $log started in log/log.log]"
 $log.info "** Server Start #{Time.now}"
