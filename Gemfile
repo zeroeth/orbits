@@ -1,0 +1,7 @@
+source "http://rubygems.org"
+gem "shoulda"
+gem "chingu"
+gem "ruby-opengl"
+gem "colored"
+gem "dm-core"
+gem "dm-sqlite-adapter"
