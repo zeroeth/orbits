@@ -10,25 +10,26 @@
 # - smooth or stepped angle advancing. (angular, axial)
 # - step count per rotation (determins step size and time to step)
 
-# helper to 'space out' elements evenly
+# GEMS
 require 'rubygems'
+require 'bundler/setup'
 require 'chingu'
-
 require 'logger'
+require 'gl'
+require 'glu'
+
+include Gosu
+include Gl
+include Glu
+
+# LOCALS
+require 'orbiter_tree'
+
+# SETUP
 $log = Logger.new("log/log.log")
 $log.level = Logger::DEBUG
 puts "[Logger $log started in log/log.log]"
 $log.info "** Server Start #{Time.now}"
-require 'colored'
-
-include Gosu
-require 'gl'
-require 'glu'
-
-include Gl
-include Glu
-
-require 'orbiter_tree'
 
 class Orbits < Chingu::Window
   attr_accessor :tree
