@@ -15,7 +15,7 @@ class OrbiterTree
 
     # web app for entering new orbit trees
     #
-    self.root_node = Orbiter.first(:name => 'sun')
+    self.root_node = Orbiter.first
     puts root_node.inspect
   end
 
