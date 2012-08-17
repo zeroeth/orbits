@@ -1,0 +1,45 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    addressable (2.2.4)
+    chingu (0.8.1)
+      crack
+      gosu (>= 0.7.25)
+      rest-client
+    colored (1.2)
+    crack (0.1.8)
+    data_objects (0.10.3)
+      addressable (~> 2.1)
+    dm-core (1.0.2)
+      addressable (~> 2.2)
+      extlib (~> 0.9.15)
+    dm-do-adapter (1.0.2)
+      data_objects (~> 0.10.2)
+      dm-core (~> 1.0.2)
+    dm-sqlite-adapter (1.0.2)
+      dm-do-adapter (~> 1.0.2)
+      do_sqlite3 (~> 0.10.2)
+    do_sqlite3 (0.10.3)
+      data_objects (= 0.10.3)
+    extlib (0.9.15)
+    gosu (0.7.27)
+    mime-types (1.16)
+    mkrf (0.2.3)
+    rake (0.8.7)
+    rest-client (1.6.1)
+      mime-types (>= 1.16)
+    ruby-opengl (0.60.1)
+      mkrf (>= 0.2.0)
+      rake
+    shoulda (2.11.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  chingu
+  colored
+  dm-core
+  dm-sqlite-adapter
+  ruby-opengl
+  shoulda
