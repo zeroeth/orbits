@@ -65,13 +65,11 @@ class Orbiter
   end
 
   def size
-    size = attribute_get(:size)
-    size = size > 100 ? 0.1 : size
-    10
+    size = attribute_get(:size) * 2.0
   end
 
   def distance
-    distance = attribute_get(:distance)
+    # distance = attribute_get(:distance)
     if id == 1
       0
     else
@@ -90,9 +88,9 @@ class Orbiter
       glPushMatrix
         glRotate axis_angle, 0, 0, 1
         glBegin GL_TRIANGLE_FAN
-          resolution = 6
+          resolution = 32
           glVertex2i 0, 0
-	  # TODO replace with display list, and a scale
+          # TODO replace with display list, and a scale
           step = (Math::PI*2)/resolution
           (resolution+1).times do |n|
             glColor4f *[color[:red], color[:green], color[:blue], color[:alpha]]
@@ -102,7 +100,7 @@ class Orbiter
       glPopMatrix
 
       sub_orbits.each(&:draw)
-      
+
     glPopMatrix
   end
 end

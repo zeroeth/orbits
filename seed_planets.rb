@@ -1,6 +1,7 @@
 require 'orbiter'
-Orbiter.auto_migrate!
 require 'csv'
+
+Orbiter.auto_migrate!
 seed_data = []
 CSV::Reader.parse(File.open('planets.csv')).each{|row| seed_data << row}
 
