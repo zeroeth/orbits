@@ -37,8 +37,11 @@ class Orbiter
   property :axis_angle,  Float, :default =>  0.0
   property :name, String, :default => 'unamed'
 
+  attr_accessor :color
+
   def color
-    @color ||= {:red => rand, :green => rand, :blue => rand, :alpha => 1.0}
+    #@color ||= {:red => rand, :green => rand, :blue => rand, :alpha => 1.0}
+    @color ||= {:red => 0.0, :green => 0.0, :blue => 0.0, :alpha => 1.0}
   end
 
   def parent=(value)
@@ -48,9 +51,9 @@ class Orbiter
 
   def update
     if $window.fps > 0
-      $log.info "[#{$window.fps}] #{name} :: #{object_id} :: update #{orbit_angle} #{axis_angle}"
+      #$log.info "[#{$window.fps}] #{name} :: #{object_id} :: update #{orbit_angle} #{axis_angle}"
       self.orbit_angle += orbit_speed if orbit_speed.finite?
-      self.axis_angle += axis_speed if axis_speed.finite?
+      self.axis_angle  += axis_speed  if axis_speed.finite?
       sub_orbits.each(&:update)
     end
   end
@@ -79,7 +82,35 @@ class Orbiter
   end
 
   # separate into a 'view'
-  def draw
+  def draw(draw_me = true)
+    glPushMatrix
+      glRotate orbit_angle, 0, 0, 1
+      glTranslate distance, distance, 0 # not precise..
+      glRotate -orbit_angle, 0, 0, 1 # if relative
+
+      if draw_me
+        glPushMatrix
+          glRotate axis_angle, 0, 0, 1
+          glColor4f *[color[:red], color[:green], color[:blue], color[:alpha]]
+          glBegin GL_TRIANGLE_FAN
+            resolution = 32
+            glVertex2i 0, 0
+            # TODO replace with display list, and a scale
+            step = (Math::PI*2)/resolution
+            (resolution+1).times do |n|
+              glColor4f *[color[:red], color[:green], color[:blue], color[:alpha]]
+              glVertex2f Math::sin(n*step)*size, Math::cos(n*step)*size
+            end
+          glEnd
+        glPopMatrix
+      end
+
+      sub_orbits.each(&:draw)
+
+    glPopMatrix
+  end
+
+  def draw_borders
     glPushMatrix
       glRotate orbit_angle, 0, 0, 1
       glTranslate distance, distance, 0 # not precise..
@@ -87,19 +118,20 @@ class Orbiter
 
       glPushMatrix
         glRotate axis_angle, 0, 0, 1
+        glColor4f *[0.0, 1.0, 1.0, 1.0]
         glBegin GL_TRIANGLE_FAN
           resolution = 32
           glVertex2i 0, 0
           # TODO replace with display list, and a scale
           step = (Math::PI*2)/resolution
           (resolution+1).times do |n|
-            glColor4f *[color[:red], color[:green], color[:blue], color[:alpha]]
-            glVertex2f Math::sin(n*step)*size, Math::cos(n*step)*size
+            glColor4f *[0.0, 1.0, 1.0, 1.0]
+            glVertex2f Math::sin(n*step)*(size+5), Math::cos(n*step)*(size+5)
           end
         glEnd
       glPopMatrix
 
-      sub_orbits.each(&:draw)
+      sub_orbits.each(&:draw_borders)
 
     glPopMatrix
   end

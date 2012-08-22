@@ -38,7 +38,6 @@ class Orbits < Chingu::Window
     super
     self.input = { :esc => :exit }
     self.tree = OrbiterTree.new self
-    @color = Color.new(0xFFFF0000)
   end
 
   def update

@@ -37,3 +37,10 @@ Usage
 -----
 
     ruby orbits.rb
+
+
+Todo
+----
+
+Toggle keys for applying uniform/scaled distance from sun to max of height of screen.
+(also add a draw from middle of sun on far-left mode.. maybe stationary but with axis and moons.. and a 'speed, striped orbit line')
