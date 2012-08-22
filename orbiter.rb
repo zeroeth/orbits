@@ -110,7 +110,8 @@ class Orbiter
     glPopMatrix
   end
 
-  def draw_borders
+  def draw_borders(the_sun = false)
+    color = the_sun ? [0.4, 0.4, 0.4, 1.0] : [0.0, 0.8, 0.8, 1.0]
     glPushMatrix
       glRotate orbit_angle, 0, 0, 1
       glTranslate distance, distance, 0 # not precise..
@@ -118,14 +119,14 @@ class Orbiter
 
       glPushMatrix
         glRotate axis_angle, 0, 0, 1
-        glColor4f *[0.0, 1.0, 1.0, 1.0]
+        glColor4f *color
         glBegin GL_TRIANGLE_FAN
           resolution = 32
           glVertex2i 0, 0
           # TODO replace with display list, and a scale
           step = (Math::PI*2)/resolution
           (resolution+1).times do |n|
-            glColor4f *[0.0, 1.0, 1.0, 1.0]
+            glColor4f *color
             glVertex2f Math::sin(n*step)*(size+5), Math::cos(n*step)*(size+5)
           end
         glEnd

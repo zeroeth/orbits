@@ -26,7 +26,7 @@ class OrbiterTree
     glPushMatrix
       glTranslate window.width/2, window.height/2, 0
       #glScale 6, 6, 6 # should map AU to screen space
-      root_node.draw_borders
+      root_node.draw_borders(true)
       root_node.draw(false)
       # tree vs element.. rotation code in tree? element only knows its own code? sounds good.
     glPopMatrix
